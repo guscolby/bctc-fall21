@@ -21,7 +21,7 @@ public class MusicFormLauncher extends Application {
         //make sure to put dialog box here!!!!
 
         //read header image file
-        Image header = new Image(new FileInputStream(".\\src\\com\\epre\\java2\\musicform\\badge10.png"));
+        Image header = new Image(new FileInputStream("./src/com/epre/java2/musicform/badge10.png"));
 
         //set up view for image file
         ImageView headerView = new ImageView(header);
