@@ -6,6 +6,6 @@ module javafx {
 	requires javafx.media;
 	requires javafx.swing;
 	requires javafx.web;
-	
-	opens com.epre.java2;
+
+	opens com.epre.java2.timesleptestimate;
 }

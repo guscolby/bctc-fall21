@@ -1,5 +1,6 @@
-package com.epre.java2;
+package com.epre.java2.timesleptestimate;
 
+import com.epre.java2.timesleptestimate.TimeSleptEstimate;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import javafx.application.Application;
