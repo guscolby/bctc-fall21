@@ -8,4 +8,5 @@ module javafx {
 	requires javafx.web;
 
 	opens com.epre.java2.timesleptestimate;
+	opens com.epre.java2.musicform;
 }
