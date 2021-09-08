@@ -18,8 +18,6 @@ public class MusicFormLauncher extends Application {
 
         //start method, sets up stage and displays it
 
-        //make sure to put dialog box here!!!!
-
         //read header image file
         Image header = new Image(new FileInputStream("./src/com/epre/java2/musicform/badge10.png"));
 

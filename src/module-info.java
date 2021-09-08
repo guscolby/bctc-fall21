@@ -9,4 +9,5 @@ module javafx {
 
 	opens com.epre.java2.timesleptestimate;
 	opens com.epre.java2.musicform;
+	opens com.epre.java2.simon;
 }
