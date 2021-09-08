@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# IntelliJ xml files
+.idea/*.xml
+
+# IntelliJ .iml file
+/BCTCFall21.iml
+
+# Eclipse-specific project files
+/.classpath
+/.project
