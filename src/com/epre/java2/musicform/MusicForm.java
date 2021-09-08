@@ -164,17 +164,10 @@ public class MusicForm extends VBox {
         //getchildren and addall to main vbox
         getChildren().addAll(
                 bandNameBox, bandWebsiteBox,
-                sampleTitle, samplePane,
+                sampleTitle,  samplePane,
                 daysOfWeekTitle, dayOfWeekBox,
                 contactPane,
                 buttonBox);
-
-    }
-
-
-    public void processFieldInput(ActionEvent event) {
-
-        //determine field input source and store to variables accordingly
 
     }
 
@@ -184,21 +177,73 @@ public class MusicForm extends VBox {
 
     }
 
-    public void processCheckboxInput(ActionEvent event) {
-
-        //not sure if needed, would process checkbox input
-
-    }
-
     public void processSubmitButton(ActionEvent event) {
 
         //processes the submit button being pressed
+        Alert outputDialog = new Alert(Alert.AlertType.INFORMATION);
+        outputDialog.setHeaderText(null);
+
+        //checks if text fields are empty
+        if ((bandNameField.getText().isEmpty())
+                || (websiteField.getText().isEmpty())
+                || (contactNameField.getText().isEmpty())
+                || (contactPhoneField.getText().isEmpty())) {
+
+            //shows error message if any field is empty
+            outputDialog.setContentText("Error: one or more fields were left blank.");
+
+        } else {
+
+            //sets variables according to text field content
+            bandName = bandNameField.getText();
+            bandWebsite = websiteField.getText();
+
+            daysAvailable = "";
+            if (dayOfWeekBox1.isSelected()) {
+                daysAvailable += "--Tuesday\n";
+            }
+            if (dayOfWeekBox2.isSelected()) {
+                daysAvailable += "--Friday\n";
+            }
+            if(dayOfWeekBox3.isSelected()) {
+                daysAvailable += "--Saturday\n";
+            }
+
+            contactName = contactNameField.getText();
+            contactPhone = contactPhoneField.getText();
+
+            //sets up info dialog with user-input data
+            outputDialog.setContentText("The following information was successfully submitted:" +
+                    "\nBand: "            + bandName +
+                    "\nWebsite/FB Page: " + bandWebsite +
+                    "\nSound clips were successfully uploaded." +
+                    "\n" + bandName + " are available to play on:" +
+                    "\n" + daysAvailable +
+                    "Contact information: " + contactName +
+                    " at " + contactPhone);
+
+        }
+
+        //shows dialog
+        outputDialog.showAndWait();
 
     }
 
     public void processClearButton(ActionEvent event) {
 
-        //clear button action
+        //clear all fields/buttons
+        bandNameField.clear();
+        websiteField.clear();
+
+        sampleButton1.setSelected(false);
+        sampleButton2.setSelected(false);
+
+        dayOfWeekBox1.setSelected(false);
+        dayOfWeekBox2.setSelected(false);
+        dayOfWeekBox3.setSelected(false);
+
+        contactNameField.clear();
+        contactPhoneField.clear();
 
     }
 
