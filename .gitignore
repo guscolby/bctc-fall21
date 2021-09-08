@@ -3,10 +3,10 @@
 /workspace.xml
 
 # IntelliJ xml files
-.idea/*.xml
+#.idea/*.xml
 
 # IntelliJ .iml file
-/BCTCFall21.iml
+#/BCTCFall21.iml
 
 # Eclipse-specific project files
 /.classpath
