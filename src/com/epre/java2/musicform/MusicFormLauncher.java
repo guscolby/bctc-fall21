@@ -10,18 +10,31 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.InputStream;
 
 public class MusicFormLauncher extends Application {
 
-    public void start(Stage primaryStage) throws FileNotFoundException {
+    public void start(Stage primaryStage) throws Exception {
 
         //start method, sets up stage and displays it
 
-        //read header image file
-        Image header = new Image(new FileInputStream("./src/com/epre/java2/musicform/badge10.png"));
+        /*--------------------------------------------------------------------------------------------------------------
+        resource folder currently not being read. if functional, commented-out fileinputstream and image declarations
+        and inits would pull file from /resources/images/ instead of requiring the full path. pulling images from the
+        resource folder requires fewer changes than pulling audio clips, so the only difference here is the addition
+        of the getResourceAsStream call. might need to add .getClassLoader(), see SimonGame for reference
 
-        //set up view for image file
+        //read header image file
+        FileInputStream headerIS = new FileInputStream(getClass().getResourceAsStream("images/badge10.png"));
+        Image header = new Image(headerIS)
+        ----------------------------------------------------------------------------------------------------------------
+        */
+
+        //read header image file
+        FileInputStream headerIS = new FileInputStream("./resources/images/badge10.png");
+        Image header = new Image(headerIS);
+
+        //set up view for header image
         ImageView headerView = new ImageView(header);
 
         //create and setup MusicForm instance
