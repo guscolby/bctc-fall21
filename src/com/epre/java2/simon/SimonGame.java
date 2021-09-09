@@ -35,14 +35,14 @@ public class SimonGame extends VBox {
 
 
     //set game length
-    final int GAME_LENGTH = 8;
+    final short GAME_LENGTH = 8;
 
     //arrays to store button press history in int and string form, respectively
     int[] buttonHistoryIntsArray = new int[GAME_LENGTH];
     String[] buttonHistoryStringArray = new String[GAME_LENGTH];
 
     //index for those arrays
-    int buttonHistoryIndex = 0;
+    short buttonHistoryIndex = 0;
 
 
     AudioClip[] audioClips;
@@ -65,8 +65,8 @@ public class SimonGame extends VBox {
         Font titleFont = new Font(14);
 
         //set button sizing
-        final double COLOR_BUTTON_WIDTH  = 100;
-        final double COLOR_BUTTON_HEIGHT = 50;
+        final short COLOR_BUTTON_WIDTH  = 100;
+        final short COLOR_BUTTON_HEIGHT = 50;
 
 
         //instruction/title label
