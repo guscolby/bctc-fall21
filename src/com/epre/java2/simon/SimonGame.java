@@ -15,114 +15,129 @@ import java.util.Arrays;
 import java.io.File;
 //import java.io.FileInputStream;
 
+/*----------------------------------------------------------------------------------------------------------------------
+> august colby
+> 9/8/2021
+> krishna nandanoor
+> java ii
+
+> a program which displays a simple memory game proof-of concept.
+------------------------------------------------------------------------------------------------------------------------
+ */
+
 public class SimonGame extends VBox {
 
-    //label vars
     Label instructionsLabel, gameHistoryLabel;
 
-    //color button vars
     Button redButton, blueButton, greenButton, yellowButton;
 
-    //context button vars
     Button newGameButton, rememberGameButton, exitButton;
 
-    //button press history array (ints)
-    int[] buttonHistoryIntsArray = new int[8];
 
-    //index for history array
+    //set game length
+    final int GAME_LENGTH = 8;
+
+    //arrays to store button press history in int and string form, respectively
+    int[] buttonHistoryIntsArray = new int[GAME_LENGTH];
+    String[] buttonHistoryStringArray = new String[GAME_LENGTH];
+
+    //index for those arrays
     int buttonHistoryIndex = 0;
-    //final int equal to button press history arraylength
-    final int GAME_LENGTH = buttonHistoryIntsArray.length;
 
-    //button press history array (strings)
-    String[] buttonHistoryStringArray = new String[8];
 
-    //audioclip array
     AudioClip[] audioClips;
 
-    //variable to store current audio clip
     AudioClip current;
+
+    /*------------------------------------------------------------------------------------------------------------------
+    > displays a gui with four colored game buttons and several context labels/buttons.
+
+    > instructs the user to input any combination of eight game button presses.
+    > when prompted, the program recalls the last "game" (last eight presses)
+        and relays them back to the user.
+    --------------------------------------------------------------------------------------------------------------------
+     */
 
     public SimonGame () {
 
-        //default font
-        Font font = new Font(12);
+        //set font sizing
+        Font font      = new Font(12);
+        Font titleFont = new Font(14);
 
-        //sizing vars
-        final double BUTTON_WIDTH = 100;
-        final double BUTTON_HEIGHT = 50;
+        //set button sizing
+        final double COLOR_BUTTON_WIDTH  = 100;
+        final double COLOR_BUTTON_HEIGHT = 50;
 
-        //instructions label content
+
+        //instruction/title label
         instructionsLabel = new Label("Welcome to Simon! " +
                 "\n\nThis game will remember the order in which you click the colored buttons." +
-                "\nClick \"New Game\" to get started, or \"Remember Game\" to print the last 8 buttons you clicked.");
-        instructionsLabel.setFont(font);
+                "\nClick 'New Game' to get started or 'Remember Game' to print the last 8 buttons clicked.");
+        instructionsLabel.setFont(titleFont);
         instructionsLabel.setTextAlignment(TextAlignment.CENTER);
 
-        //init game history label as blank
         gameHistoryLabel = new Label("-- No game history --");
         gameHistoryLabel.setFont(font);
 
-        //declare and init color button gridpane
+
+        //color button gridpane
         GridPane colorButtonPane = new GridPane();
         colorButtonPane.setAlignment(Pos.CENTER);
         colorButtonPane.setVgap(5);
         colorButtonPane.setHgap(5);
 
-        //init color buttons: content, onpressaction, and color
-        //red
+        //red button
         redButton = new Button("Red (0)");
         redButton.setOnAction(this::processColorButton);
 
-        redButton.setPrefWidth(BUTTON_WIDTH);
-        redButton.setPrefHeight(BUTTON_HEIGHT);
-        redButton.setFont(font);
+        redButton.setPrefWidth(COLOR_BUTTON_WIDTH);
+        redButton.setPrefHeight(COLOR_BUTTON_HEIGHT);
+        redButton.setFont(titleFont);
         redButton.setStyle("-fx-background-color: tomato");
 
-        //blue
+        //blue button
         blueButton = new Button("Blue (1)");
         blueButton.setOnAction(this::processColorButton);
 
-        blueButton.setPrefWidth(BUTTON_WIDTH);
-        blueButton.setPrefHeight(BUTTON_HEIGHT);
-        blueButton.setFont(font);
+        blueButton.setPrefWidth(COLOR_BUTTON_WIDTH);
+        blueButton.setPrefHeight(COLOR_BUTTON_HEIGHT);
+        blueButton.setFont(titleFont);
         blueButton.setStyle("-fx-background-color: deepskyblue");
 
-        //green
+        //green button
         greenButton = new Button("Green (2)");
         greenButton.setOnAction(this::processColorButton);
 
-        greenButton.setPrefWidth(BUTTON_WIDTH);
-        greenButton.setPrefHeight(BUTTON_HEIGHT);
-        greenButton.setFont(font);
+        greenButton.setPrefWidth(COLOR_BUTTON_WIDTH);
+        greenButton.setPrefHeight(COLOR_BUTTON_HEIGHT);
+        greenButton.setFont(titleFont);
         greenButton.setStyle("-fx-background-color: limegreen");
 
-        //yellow
+        //yellow button
         yellowButton = new Button("Yellow (3)");
         yellowButton.setOnAction(this::processColorButton);
 
-        yellowButton.setPrefWidth(BUTTON_WIDTH);
-        yellowButton.setPrefHeight(BUTTON_HEIGHT);
-        yellowButton.setFont(font);
+        yellowButton.setPrefWidth(COLOR_BUTTON_WIDTH);
+        yellowButton.setPrefHeight(COLOR_BUTTON_HEIGHT);
+        yellowButton.setFont(titleFont);
         yellowButton.setStyle("-fx-background-color: gold");
 
-        //array to house color buttons
-        Button[] buttonContainerArray = {redButton, blueButton, greenButton, yellowButton};
+        //fill color button gridpane
+        colorButtonPane.add(redButton,    0,0);
+        colorButtonPane.add(blueButton,   1,0);
+        colorButtonPane.add(greenButton,  0,1);
+        colorButtonPane.add(yellowButton, 1,1);
 
-        //fill color button gridpane from array
-        colorButtonPane.add(buttonContainerArray[0], 0,0);  //red
-        colorButtonPane.add(buttonContainerArray[1], 1,0);  //blue
-        colorButtonPane.add(buttonContainerArray[2], 0,1);  //green
-        colorButtonPane.add(buttonContainerArray[3], 1,1);  //yellow
 
         /*--------------------------------------------------------------------------------------------------------------
-        resource folder currently not being read. if functional, commented-out file and clip array inits would
-        pull files from /resources/audio/ instead of requiring the full path. pulling files from the resource folder
-        also requires that they be pulled as a file input stream instead of simply a file, hence the difference in
-        data type in the first array and the conversion to file with getFile() in the for loop.
+        > resource folder currently not being read.
+        > if functional, commented-out file and clip array inits would pull files from /resources/audio/ instead of
+            requiring the full path.
+        > pulling files from the resource folder also requires that they be pulled as a file input stream instead of
+            simply a file, hence the difference in data type in the first array and the conversion to file with
+            getFile() in the for loop.
 
         //declare and init audio fileinputstream array (imports raw files into program)
-
         FileInputStream[] audioFiles = {
                 new FileInputStream(getClass().getClassLoader().getResourceAsStream("audio/Red.wav")),
                 new FileInputStream(getClass().getClassLoader().getResourceAsStream("audio/Blue.wav")),
@@ -138,31 +153,29 @@ public class SimonGame extends VBox {
         ----------------------------------------------------------------------------------------------------------------
         */
 
-        //declare and init audio file array (imports raw files into program)
-
+        //audio File array (imports raw audio files into program)
         File[] audioFiles = {
-                new File("./resources/audio/Red.wav"),     //red audio file
-                new File("./resources/audio/Blue.wav"),    //blue audio file
-                new File("./resources/audio/Green.wav"),   //green audio file
-                new File("./resources/audio/Yellow.wav"),  //yellow audio file
+                new File("./resources/audio/Red.wav"),
+                new File("./resources/audio/Blue.wav"),
+                new File("./resources/audio/Green.wav"),
+                new File("./resources/audio/Yellow.wav"),
         };
 
-        //init audio clip array
+        //AudioClip array (stores usable audio clips)
         audioClips = new AudioClip[audioFiles.length];
 
-        //fill audio clip array from audio file array
         for(int i = 0; i < audioClips.length; i++) {
             audioClips[i] = new AudioClip(audioFiles[i].toURI().toString());
         }
 
-        //default value for current clip
+        //default value for current clip (program breaks w/o default)
         current = audioClips[0];
 
-        //declare context button hbox
+
+        //menu button box
         HBox menuButtonBox = new HBox(5);
         menuButtonBox.setAlignment(Pos.CENTER);
 
-        //init context buttons
         newGameButton = new Button("New Game");
         newGameButton.setOnAction(this::processNewGameButton);
         newGameButton.setFont(font);
@@ -175,10 +188,11 @@ public class SimonGame extends VBox {
         exitButton.setOnAction(this::processExitButton);
         exitButton.setFont(font);
 
-        //fill context button hbox with buttons
+        //fill menu button box
         menuButtonBox.getChildren().addAll(newGameButton, rememberGameButton, exitButton);
 
-        //default behavior: set color controls and remember game to disabled
+
+        //initial button states
         redButton.setDisable(true);
         blueButton.setDisable(true);
         greenButton.setDisable(true);
@@ -186,7 +200,8 @@ public class SimonGame extends VBox {
 
         rememberGameButton.setDisable(true);
 
-        //getchildren and addall to overall vbox
+
+        //add gui contents to main vbox
         getChildren().addAll(
                 instructionsLabel,
                 gameHistoryLabel,
@@ -195,30 +210,35 @@ public class SimonGame extends VBox {
 
     }
 
+    /*------------------------------------------------------------------------------------------------------------------
+    > processes a color/game button being clicked.
+
+    > this method:
+        > plays the audio clip corresponding to the button's color
+        > updates the game's history with an entry corresponding to the button's color
+        > checks if the GAME_LENGTH has been reached and ends it if so
+            > will also update button states accordingly
+    --------------------------------------------------------------------------------------------------------------------
+     */
+
     public void processColorButton(ActionEvent event) {
 
-        //stop currently playing audioclip
         current.stop();
 
-        //duplicate of button container array for use in identifying source button
-        Button[] buttonEventArray = {redButton, blueButton, greenButton, yellowButton};
-
         //store index of source button for later use
-        short sourceIndex = (short)(Arrays.asList(buttonEventArray).indexOf(event.getSource()));
+            //this is accomplished by mapping color buttons to an array and then checking source's index
+        Button[] buttonContainerArray =  {redButton, blueButton, greenButton, yellowButton};
+        short sourceIndex = (short)(Arrays.asList(buttonContainerArray).indexOf(event.getSource()));
 
-        //set current audio clip accordingly and play it
         current = audioClips[sourceIndex];
         current.play();
 
-        //check that max game length of 8 has not been reached
-        //if index int < final int (history array length), continue, otherwise skip this part
-        if (buttonHistoryIndex < GAME_LENGTH) {
 
-            //update game history int array with source button's index
-            buttonHistoryIntsArray[buttonHistoryIndex] = sourceIndex;
+        if (buttonHistoryIndex < GAME_LENGTH) {                        //checks if game length has been reached
 
-            //switch updates game history string array with appropriate value
-            switch (sourceIndex) {
+            buttonHistoryIntsArray[buttonHistoryIndex] = sourceIndex;  //add entry to int[] history array
+
+            switch (sourceIndex) {                                     //add entry to String[] history array
                 case 0:
                     buttonHistoryStringArray[buttonHistoryIndex] = "-Red-";
                     break;
@@ -233,12 +253,10 @@ public class SimonGame extends VBox {
                     break;
             }
 
-            //increment button history index (basically, add to the total number of presses)
             buttonHistoryIndex++;
 
         }
 
-        //disable/enable buttons accordingly if max game length has been reached
         if (buttonHistoryIndex == GAME_LENGTH) {
 
             redButton.setDisable(true);
@@ -252,45 +270,59 @@ public class SimonGame extends VBox {
 
     }
 
+    /*------------------------------------------------------------------------------------------------------------------
+    > processes the 'new game' button being clicked.
+
+    > this method:
+        > enables the color/game buttons
+        > disables the 'remember game' button
+        > resets the game history
+    --------------------------------------------------------------------------------------------------------------------
+     */
+
     public void processNewGameButton(ActionEvent event) {
 
-        //stop currently playing audioclip
         current.stop();
 
-        //set color controls to enabled
         redButton.setDisable(false);
         blueButton.setDisable(false);
         greenButton.setDisable(false);
         yellowButton.setDisable(false);
 
-        //set remember game button to disabled
         rememberGameButton.setDisable(true);
 
-        //clear game history int and string arrays
+
         Arrays.fill(buttonHistoryIntsArray, 0);
         Arrays.fill(buttonHistoryStringArray, null);
 
-        //reset index int to 0
         buttonHistoryIndex = 0;
 
     }
 
+    /*------------------------------------------------------------------------------------------------------------------
+    > processes the 'remember game' button being clicked.
+
+    > updates the game history label with the colors of the last 8 buttons the user clicked.
+    --------------------------------------------------------------------------------------------------------------------
+     */
+
     public void processRememberGameButton(ActionEvent event) {
 
-        //update previous game label with contents of button history string array
         gameHistoryLabel.setText("");
 
     for (String color : buttonHistoryStringArray) {
-
             gameHistoryLabel.setText(gameHistoryLabel.getText() + "  " + color);
-
         }
 
     }
 
+    /*------------------------------------------------------------------------------------------------------------------
+    > processes the 'exit' button being clicked; exits the program.
+    --------------------------------------------------------------------------------------------------------------------
+     */
+
     public void processExitButton(ActionEvent event) {
 
-        //exit program
         Platform.exit();
 
     }

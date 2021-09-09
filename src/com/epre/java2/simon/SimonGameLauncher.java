@@ -6,23 +6,34 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
+/*----------------------------------------------------------------------------------------------------------------------
+> august colby
+> 9/8/2021
+> krishna nandanoor
+> java ii
+
+> a program which launches the SimonGame gui.
+------------------------------------------------------------------------------------------------------------------------
+ */
 
 public class SimonGameLauncher extends Application {
 
-    public void start (Stage primaryStage) {
+    /*------------------------------------------------------------------------------------------------------------------
+    > the launcher's start method.
 
-        //sets up stage and displays it
+    > creates an instance of SimonGame, adds it to the gui's scene & stage and shows it
+    --------------------------------------------------------------------------------------------------------------------
+     */
+
+    public void start (Stage primaryStage) {
 
         SimonGame main = new SimonGame();
         main.setAlignment(Pos.CENTER);
         main.setSpacing(30);
         main.setPadding(new Insets(15));
 
-        //setup scene
         Scene scene = new Scene(main, 600,400);
 
-        //setup stage
         primaryStage.setTitle("Simon Game");
         primaryStage.setScene(scene);
         primaryStage.show();
